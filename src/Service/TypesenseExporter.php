@@ -61,6 +61,47 @@ class TypesenseExporter
         return $results;
     }
 
+    public function exportAllProducts(bool $dryRun = false): array
+    {
+        $startTime = microtime(true);
+        $products = $this->productRepository->findBy(['status' => ContentStatus::PUBLISHED]);
+        
+        $exported = 0;
+        $skipped = 0;
+        $errors = [];
+        $sample = null;
+
+        foreach ($products as $product) {
+            try {
+                $payload = $this->buildPayload($product);
+                
+                // Capturer un exemple de payload
+                if ($sample === null) {
+                    $sample = $payload->toArray();
+                }
+
+                if (!$dryRun) {
+                    $this->exportProduct($product);
+                }
+                
+                $exported++;
+            } catch (\Exception $e) {
+                $errors[] = "Produit {$product->getName()}: {$e->getMessage()}";
+                $skipped++;
+            }
+        }
+
+        $duration = round(microtime(true) - $startTime, 2);
+
+        return [
+            'exported' => $exported,
+            'skipped' => $skipped,
+            'errors' => $errors,
+            'duration' => $duration,
+            'sample' => $sample,
+        ];
+    }
+
     public function deleteProduct(Product $product): bool
     {
         try {

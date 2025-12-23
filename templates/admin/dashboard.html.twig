@@ -1,0 +1,62 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    <h1 class="title">
+        <i class="fa fa-home"></i> Auramur CMS Dashboard
+    </h1>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Bienvenue dans le CMS Auramur</h2>
+                    <p class="lead">Gérez vos produits, articles et contenus depuis cette interface.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fa fa-shopping-bag"></i> Produits</h5>
+                                    <p class="card-text">Gérez votre catalogue de papiers peints</p>
+                                    <a href="{{ path('admin', {crudAction: 'index', crudControllerFqcn: 'App\\\\Controller\\\\Admin\\\\ProductCrudController'}) }}" class="btn btn-light btn-sm">Accéder</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fa fa-newspaper"></i> Articles</h5>
+                                    <p class="card-text">Gérez vos articles de blog</p>
+                                    <a href="{{ path('admin', {crudAction: 'index', crudControllerFqcn: 'App\\\\Controller\\\\Admin\\\\ArticleCrudController'}) }}" class="btn btn-light btn-sm">Accéder</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title"><i class="fa fa-brain"></i> IA & Imports</h5>
+                                    <p class="card-text">Gérez les générations IA et imports</p>
+                                    <a href="{{ path('admin', {crudAction: 'index', crudControllerFqcn: 'App\\\\Controller\\\\Admin\\\\AiGenerationCrudController'}) }}" class="btn btn-light btn-sm">Accéder</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <h4>Raccourcis</h4>
+                            <ul>
+                                <li><a href="{{ path('admin_import_woo') }}">Import WooCommerce</a></li>
+                                <li><a href="{{ path('admin_export_typesense') }}">Export Typesense</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

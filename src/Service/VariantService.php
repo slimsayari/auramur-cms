@@ -66,9 +66,19 @@ class VariantService
     {
         $variants = [];
         foreach ($variantsData as $variantData) {
-            $variants[] = $this->createVariant($product, $variantData);
+            $variant = new ProductVariant();
+            $variant->setProduct($product);
+            $variant->setSku($variantData['sku']);
+            $variant->setName($variantData['name']);
+            $variant->setDimensions($variantData['dimensions'] ?? null);
+            $variant->setPricePerM2($variantData['pricePerM2']);
+            $variant->setStock($variantData['stock'] ?? 0);
+            $variant->setIsActive($variantData['isActive'] ?? true);
+            
+            $product->addVariant($variant);
+            $this->entityManager->persist($variant);
+            $variants[] = $variant;
         }
-        $this->entityManager->flush();
 
         return $variants;
     }

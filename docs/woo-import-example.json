@@ -1,0 +1,74 @@
+[
+  {
+    "wooId": "12345",
+    "title": "Papier Peint Tropical Paradise",
+    "slug": "papier-peint-tropical-paradise",
+    "description": "Un magnifique papier peint aux motifs tropicaux, parfait pour apporter une touche d'exotisme à votre intérieur.",
+    "sku": "PP-TROP-001",
+    "price": 89.99,
+    "categories": ["Tropical", "Nature"],
+    "tags": ["jungle", "palmiers", "exotique"],
+    "images": [
+      {
+        "url": "https://example.com/images/tropical-paradise-main.jpg",
+        "alt": "Papier peint tropical paradise - vue principale"
+      },
+      {
+        "url": "https://example.com/images/tropical-paradise-detail.jpg",
+        "alt": "Papier peint tropical paradise - détail"
+      }
+    ],
+    "variants": [
+      {
+        "sku": "PP-TROP-001-S",
+        "name": "Small (50x300cm)",
+        "dimensions": "50x300",
+        "pricePerM2": 5.99,
+        "stock": 25
+      },
+      {
+        "sku": "PP-TROP-001-M",
+        "name": "Medium (100x300cm)",
+        "dimensions": "100x300",
+        "pricePerM2": 5.49,
+        "stock": 15
+      },
+      {
+        "sku": "PP-TROP-001-L",
+        "name": "Large (150x300cm)",
+        "dimensions": "150x300",
+        "pricePerM2": 4.99,
+        "stock": 10
+      }
+    ],
+    "seoTitle": "Papier Peint Tropical Paradise - Décoration Exotique",
+    "metaDescription": "Découvrez notre papier peint Tropical Paradise aux motifs de jungle et palmiers. Qualité premium, installation facile. Livraison gratuite."
+  },
+  {
+    "wooId": "12346",
+    "title": "Papier Peint Géométrique Moderne",
+    "slug": "papier-peint-geometrique-moderne",
+    "description": "Design géométrique contemporain pour un intérieur moderne et élégant.",
+    "sku": "PP-GEO-002",
+    "price": 79.99,
+    "categories": ["Moderne", "Géométrique"],
+    "tags": ["design", "contemporain", "minimaliste"],
+    "images": [
+      {
+        "url": "https://example.com/images/geometrique-moderne-main.jpg",
+        "alt": "Papier peint géométrique moderne - vue principale"
+      }
+    ],
+    "variants": [
+      {
+        "sku": "PP-GEO-002-M",
+        "name": "Medium (100x300cm)",
+        "dimensions": "100x300",
+        "pricePerM2": 5.29,
+        "stock": 20
+      }
+    ],
+    "seoTitle": "Papier Peint Géométrique Moderne - Design Contemporain",
+    "metaDescription": "Papier peint géométrique au design moderne et minimaliste. Parfait pour une décoration contemporaine. Qualité supérieure."
+  }
+]

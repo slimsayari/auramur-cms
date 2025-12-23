@@ -21,11 +21,9 @@ api_platform:
             rfc_7807_compliant_errors: true
     keep_legacy_inflector: false
     use_symfony_listeners: true
-    pagination:
-        items_per_page: 20
-        maximum_items_per_page: 100
-        partial: true
-        client_items_per_page: true
     show_webby: false
+    collection:
+        pagination:
+            enabled: true
     enable_swagger_ui: true
     enable_re_doc: true

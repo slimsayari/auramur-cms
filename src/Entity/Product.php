@@ -91,6 +91,7 @@ class Product
         $this->categories = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->aiGenerations = new ArrayCollection();
+        $this->variants = new ArrayCollection();
     }
 
     public function getId(): Uuid

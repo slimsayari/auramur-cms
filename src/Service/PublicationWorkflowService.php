@@ -49,6 +49,11 @@ class PublicationWorkflowService
             throw new \InvalidArgumentException("Un contenu archivé ne peut pas être republié directement.");
         }
 
+        // Validation spécifique pour les produits : au moins 1 variante active requise
+        if ($entity instanceof Product) {
+            $this->validateProductForPublication($entity);
+        }
+
         $entity->setStatus(ContentStatus::PUBLISHED);
         $entity->setPublishedAt(new \DateTimeImmutable());
         $entity->setUpdatedAt(new \DateTimeImmutable());
@@ -137,5 +142,31 @@ class PublicationWorkflowService
         }
 
         return $transitions;
+    }
+
+    private function validateProductForPublication(Product $product): void
+    {
+        // Vérifier qu'il y a au moins une variante active
+        $activeVariants = $product->getVariants()->filter(fn($variant) => $variant->isActive());
+
+        if ($activeVariants->isEmpty()) {
+            throw new \InvalidArgumentException(
+                "Impossible de publier un produit sans variante active. Veuillez ajouter au moins une variante avec stock > 0."
+            );
+        }
+
+        // Vérifier qu'il y a au moins une image
+        if ($product->getImages()->isEmpty()) {
+            throw new \InvalidArgumentException(
+                "Impossible de publier un produit sans image. Veuillez ajouter au moins une image."
+            );
+        }
+
+        // Vérifier que le SEO est configuré
+        if (!$product->getSeo()) {
+            throw new \InvalidArgumentException(
+                "Impossible de publier un produit sans configuration SEO. Veuillez configurer les métadonnées SEO."
+            );
+        }
     }
 }
