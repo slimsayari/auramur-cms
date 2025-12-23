@@ -1,0 +1,31 @@
+api_platform:
+    title: 'Auramur CMS API'
+    description: 'Headless CMS API for Auramur wallpaper e-commerce'
+    version: '1.0.0'
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
+        html: ['text/html']
+    docs_formats:
+        jsonld: ['application/ld+json']
+        jsonopenapi: ['application/vnd.openapi+json']
+        html: ['text/html']
+    defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+            max_age: 3600
+            shared_max_age: 3600
+        extra_properties:
+            standard_put: true
+            rfc_7807_compliant_errors: true
+    keep_legacy_inflector: false
+    use_symfony_listeners: true
+    pagination:
+        items_per_page: 20
+        maximum_items_per_page: 100
+        partial: true
+        client_items_per_page: true
+    show_webby: false
+    enable_swagger_ui: true
+    enable_re_doc: true

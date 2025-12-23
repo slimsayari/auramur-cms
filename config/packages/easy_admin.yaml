@@ -1,0 +1,157 @@
+easy_admin:
+  site_name: 'Auramur CMS'
+  
+  entities:
+    Product:
+      class: App\Entity\Product
+      label: 'Produits'
+      list:
+        title: 'Liste des produits'
+        fields:
+          - { property: 'id', label: 'ID' }
+          - { property: 'name', label: 'Nom' }
+          - { property: 'sku', label: 'SKU' }
+          - { property: 'status', label: 'Statut' }
+          - { property: 'createdAt', label: 'Créé le', type: 'datetime' }
+        filters: ['status', 'categories']
+        actions:
+          - { name: 'show', icon: 'eye' }
+          - { name: 'edit', icon: 'pencil' }
+          - { name: 'delete', icon: 'trash' }
+      show:
+        title: 'Détail du produit'
+        fields:
+          - { property: 'id', label: 'ID' }
+          - { property: 'name', label: 'Nom' }
+          - { property: 'slug', label: 'Slug' }
+          - { property: 'description', label: 'Description' }
+          - { property: 'sku', label: 'SKU' }
+          - { property: 'price', label: 'Prix' }
+          - { property: 'status', label: 'Statut' }
+          - { property: 'categories', label: 'Catégories' }
+          - { property: 'tags', label: 'Tags' }
+          - { property: 'variants', label: 'Variantes' }
+          - { property: 'seo', label: 'SEO' }
+          - { property: 'createdAt', label: 'Créé le', type: 'datetime' }
+          - { property: 'updatedAt', label: 'Mis à jour le', type: 'datetime' }
+      form:
+        title: 'Éditer le produit'
+        fields:
+          - { property: 'name', label: 'Nom', type: 'text' }
+          - { property: 'slug', label: 'Slug', type: 'text' }
+          - { property: 'description', label: 'Description', type: 'textarea' }
+          - { property: 'sku', label: 'SKU', type: 'text' }
+          - { property: 'price', label: 'Prix', type: 'number' }
+          - { property: 'status', label: 'Statut', type: 'choice', type_options: { choices: { 'Brouillon': 'draft', 'Validé': 'validated', 'Publié': 'published' } } }
+          - { property: 'categories', label: 'Catégories', type: 'entity', type_options: { class: 'App\Entity\Category', multiple: true } }
+          - { property: 'tags', label: 'Tags', type: 'entity', type_options: { class: 'App\Entity\Tag', multiple: true } }
+
+    ProductVariant:
+      class: App\Entity\ProductVariant
+      label: 'Variantes'
+      list:
+        title: 'Liste des variantes'
+        fields:
+          - { property: 'id', label: 'ID' }
+          - { property: 'sku', label: 'SKU' }
+          - { property: 'name', label: 'Nom' }
+          - { property: 'dimensions', label: 'Dimensions' }
+          - { property: 'pricePerM2', label: 'Prix/m²' }
+          - { property: 'stock', label: 'Stock' }
+          - { property: 'isActive', label: 'Active' }
+        actions:
+          - { name: 'edit', icon: 'pencil' }
+          - { name: 'delete', icon: 'trash' }
+      form:
+        title: 'Éditer la variante'
+        fields:
+          - { property: 'sku', label: 'SKU', type: 'text' }
+          - { property: 'name', label: 'Nom', type: 'text' }
+          - { property: 'dimensions', label: 'Dimensions (ex: 100x200)', type: 'text' }
+          - { property: 'pricePerM2', label: 'Prix au m²', type: 'number' }
+          - { property: 'stock', label: 'Stock', type: 'integer' }
+          - { property: 'isActive', label: 'Active', type: 'checkbox' }
+
+    Article:
+      class: App\Entity\Article
+      label: 'Articles'
+      list:
+        title: 'Liste des articles'
+        fields:
+          - { property: 'id', label: 'ID' }
+          - { property: 'title', label: 'Titre' }
+          - { property: 'slug', label: 'Slug' }
+          - { property: 'status', label: 'Statut' }
+          - { property: 'createdAt', label: 'Créé le', type: 'datetime' }
+        filters: ['status']
+      form:
+        title: 'Éditer l''article'
+        fields:
+          - { property: 'title', label: 'Titre', type: 'text' }
+          - { property: 'slug', label: 'Slug', type: 'text' }
+          - { property: 'excerpt', label: 'Extrait', type: 'textarea' }
+          - { property: 'content', label: 'Contenu', type: 'textarea' }
+          - { property: 'featuredImageUrl', label: 'Image vedette', type: 'text' }
+          - { property: 'status', label: 'Statut', type: 'choice', type_options: { choices: { 'Brouillon': 'draft', 'Validé': 'validated', 'Publié': 'published' } } }
+          - { property: 'categories', label: 'Catégories', type: 'entity', type_options: { class: 'App\Entity\Category', multiple: true } }
+          - { property: 'tags', label: 'Tags', type: 'entity', type_options: { class: 'App\Entity\Tag', multiple: true } }
+
+    Category:
+      class: App\Entity\Category
+      label: 'Catégories'
+      list:
+        title: 'Liste des catégories'
+        fields:
+          - { property: 'id', label: 'ID' }
+          - { property: 'name', label: 'Nom' }
+          - { property: 'slug', label: 'Slug' }
+      form:
+        title: 'Éditer la catégorie'
+        fields:
+          - { property: 'name', label: 'Nom', type: 'text' }
+          - { property: 'slug', label: 'Slug', type: 'text' }
+          - { property: 'description', label: 'Description', type: 'textarea' }
+
+    Tag:
+      class: App\Entity\Tag
+      label: 'Tags'
+      list:
+        title: 'Liste des tags'
+        fields:
+          - { property: 'id', label: 'ID' }
+          - { property: 'name', label: 'Nom' }
+          - { property: 'slug', label: 'Slug' }
+      form:
+        title: 'Éditer le tag'
+        fields:
+          - { property: 'name', label: 'Nom', type: 'text' }
+          - { property: 'slug', label: 'Slug', type: 'text' }
+
+    AiGeneration:
+      class: App\Entity\AiGeneration
+      label: 'Générations IA'
+      list:
+        title: 'Générations IA en attente'
+        dql_filter: 'entity.status = :status'
+        dql_filter_parameters: { status: 'draft' }
+        fields:
+          - { property: 'id', label: 'ID' }
+          - { property: 'type', label: 'Type' }
+          - { property: 'status', label: 'Statut' }
+          - { property: 'generatedAt', label: 'Généré le', type: 'datetime' }
+        actions:
+          - { name: 'show', icon: 'eye' }
+          - { name: 'edit', icon: 'pencil' }
+
+    WooImportLog:
+      class: App\Entity\WooImportLog
+      label: 'Logs d''import'
+      list:
+        title: 'Historique des imports WooCommerce'
+        fields:
+          - { property: 'id', label: 'ID' }
+          - { property: 'status', label: 'Statut' }
+          - { property: 'productsImported', label: 'Produits' }
+          - { property: 'variantsImported', label: 'Variantes' }
+          - { property: 'importedAt', label: 'Date', type: 'datetime' }
+        filters: ['status']
