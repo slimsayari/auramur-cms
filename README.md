@@ -1,195 +1,202 @@
-# Auramur Headless CMS - Architecture & Documentation
+# Auramur Headless CMS
 
-Ce document détaille l'architecture et la mise en place du CMS headless pour Auramur, développé avec Symfony 6.4 et API Platform.
+Mini CMS headless conçu avec **Symfony 6.4** et **API Platform** pour la gestion de produits et articles d'un site e-commerce de papier peint.
 
-**Lead Developer:** Manus AI (agissant en tant que Lead Developer Symfony avec 10+ ans d'expérience)
-**Date:** 23/12/2025
+**Lead Developer:** Manus AI  
+**Stack:** Symfony 6.4 + API Platform + Doctrine ORM + PostgreSQL  
+**Architecture:** DDD light / Clean Architecture
 
-## 1. Contexte et Objectifs
+---
 
-Le projet vise à créer un mini CMS headless pour un site e-commerce de papier peint. Ce CMS est conçu pour être léger et se concentre sur les fonctionnalités essentielles :
+## 🎯 Objectif
 
-- **Gestion de contenu** : CRUD pour les produits et les articles.
-- **Validation Humaine** : Workflow de validation pour les contenus générés par une IA externe (via n8n).
-- **API Publique** : Exposition d'une API REST propre et performante pour le site frontend.
-- **Orchestration IA** : Intégration avec des workflows n8n pour l'import de contenu.
+Ce CMS est volontairement léger et sert uniquement à :
+- Gérer les produits et articles
+- Valider des contenus générés par IA
+- Exposer une API propre au frontend
+- Orchestrer des workflows IA via n8n
 
-La stack technique imposée est respectée, avec une architecture propre inspirée des principes DDD-light.
+⚠️ **Ce CMS ne fait pas** : scraping, génération IA lourde, traitement batch.
 
-## 2. Stack Technique
+---
 
-| Composant | Version/Technologie | Rôle |
-|---|---|---|
-| **Framework** | Symfony 6.4 LTS | Cœur de l'application, gestion des services, sécurité. |
-| **API** | API Platform 3.2 | Création rapide d'une API REST/GraphQL hypermedia. |
-| **ORM** | Doctrine ORM | Mapping objet-relationnel et gestion de la base de données. |
-| **Base de données** | PostgreSQL (production) / SQLite (développement) | Persistance des données. |
-| **Sécurité** | Symfony Security | Authentification simple pour l'interface d'administration. |
-| **Dépendances clés** | `ramsey/uuid-doctrine` | Gestion des identifiants UUID. |
+## ✨ Fonctionnalités Principales
 
-## 3. Architecture Globale
+### 🛍️ Gestion de Contenu
+- **CRUD Produits & Articles** avec statuts (draft / validated / published)
+- **Variantes Produits** : dimensions, prix, SKU, stock
+- **Gestion SEO Complète** : meta, slugs, canonical, noindex/nofollow
+- **Images Produits** : métadonnées qualité (DPI, dimensions)
+- **Catégories & Tags** : organisation du contenu
 
-L'application suit une architecture en couches pour séparer clairement les responsabilités :
+### 🔄 Workflow & Publication
+- **Workflow de Publication** : draft → ready_for_review → validated → published → archived
+- **Versioning de Contenu** : historique des modifications avec rollback
+- **Soft Delete & Archivage** : aucune perte de données
+- **Mode Preview** : tokens temporaires pour visualiser les brouillons
 
-1.  **Couche de Présentation (Controllers & API Resources)** : Gère les requêtes HTTP. Les `Controllers` sont utilisés pour les actions spécifiques (webhooks, validation) tandis qu'`API Platform` gère les opérations CRUD standard.
-2.  **Couche Application (Services & DTOs)** : Contient la logique métier. Les `Services` orchestrent les opérations et les `DTOs` (Data Transfer Objects) valident et transportent les données entre les couches.
-3.  **Couche Domaine (Entities & Enums)** : Représente le cœur du métier avec les `Entities` Doctrine et les `Enums` pour les statuts et types.
-4.  **Couche Infrastructure (Repositories & Doctrine)** : Gère la persistance des données et les requêtes complexes vers la base de données.
+### 🔗 Intégrations
+- **Import WooCommerce** : migration one-shot depuis WooCommerce
+- **Export Typesense** : synchronisation read-only pour la recherche
+- **Webhooks Sortants** : notifications vers systèmes externes (n8n, cache)
+- **Traçabilité IA** : source, prompt, validateur
 
-```mermaid
-graph TD
-    subgraph Frontend
-        A[Site E-commerce React/Vue]
-    end
+### 🌐 SEO & Redirections
+- **Redirections Automatiques** : 301/302 lors des changements de slug
+- **Gestion des Slugs** : registre global pour éviter les collisions
+- **Support Multi-Langue** : architecture prête (entité Translation)
 
-    subgraph "Auramur CMS (Symfony)"
-        subgraph "Couche Présentation"
-            B[API Platform Resources] -- CRUD public --> A
-            C[Admin Controllers] -- Actions sécurisées --> D{Admin UI}
-            E[Webhook Controller] -- Import n8n --> F[n8n]
-        end
+### 🎨 Interface Admin
+- **EasyAdmin** : interface d'administration simple et fonctionnelle
+- **Gestion des Variantes** : édition inline depuis la page produit
+- **Gestion SEO** : édition directe des métadonnées
 
-        subgraph "Couche Application"
-            G[Services<br>(ProductService, ValidationService...)]
-            H[DTOs<br>(ProductCreateDTO...)]
-        end
+---
 
-        subgraph "Couche Domaine"
-            I[Entities<br>(Product, Article...)]
-            J[Enums<br>(ContentStatus...)]
-        end
+## 📦 Architecture
 
-        subgraph "Couche Infrastructure"
-            K[Doctrine Repositories]
-            L[PostgreSQL / SQLite]
-        end
-    end
+### Entités Principales (6)
+- `Product` - Produits avec variantes et SEO
+- `ProductImage` - Images avec métadonnées qualité
+- `Article` - Articles de blog
+- `Category` - Catégories
+- `Tag` - Tags
+- `AiGeneration` - Historique des générations IA
 
-    A -- "GET /api/products" --> B
-    C -- Utilise --> G
-    E -- Utilise --> G
-    B -- Appelle --> G
-    G -- Valide avec --> H
-    G -- Manipule --> I
-    G -- Utilise --> K
-    K -- Interagit avec --> L
-    I -- Mappé sur --> L
-```
+### Entités Structurelles (9)
+- `ProductVariant` - Variantes de produits
+- `ProductSeo` / `ArticleSeo` / `CategorySeo` - Métadonnées SEO
+- `ContentVersion` - Versioning
+- `Redirect` - Redirections SEO
+- `SlugRegistry` - Registre des slugs
+- `PreviewToken` - Tokens de preview
+- `Translation` - Traductions multi-langue
+- `WebhookEvent` - Événements sortants
+- `WooImportLog` - Logs d'import WooCommerce
 
-## 4. Structure des Dossiers
+### Services Métier (15)
+- `ProductService` / `ArticleService` - Logique métier CRUD
+- `PublicationWorkflowService` - Gestion des transitions d'état
+- `VersioningService` - Versioning et rollback
+- `SlugService` - Gestion des slugs et redirections
+- `PreviewService` - Génération de tokens de preview
+- `TranslationService` - Gestion des traductions
+- `WebhookDispatcher` - Dispatch des webhooks
+- `WooProductImporter` - Import depuis WooCommerce
+- `TypesenseExporter` - Export vers Typesense
+- `SeoService` / `VariantService` / `ValidationService` / `AiGenerationService`
 
-La structure du projet est organisée par type de composant, favorisant la clarté et la maintenabilité.
+---
 
-```
-auramur-cms/
-├── src/
-│   ├── ApiResource/    # Ressources exposées par API Platform
-│   ├── Controller/
-│   │   └── Admin/      # Contrôleurs pour l'API d'administration
-│   ├── DTO/            # Data Transfer Objects pour la validation
-│   ├── Entity/         # Entités Doctrine
-│   ├── Enum/           # Énumérations PHP (statuts, types)
-│   ├── Exception/      # Exceptions métier personnalisées
-│   ├── Repository/     # Repositories Doctrine
-│   └── Service/        # Services contenant la logique métier
-├── config/             # Fichiers de configuration
-├── migrations/         # Migrations de base de données
-├── .env                # Variables d'environnement (template)
-└── .env.local          # Variables d'environnement locales
-```
+## 🚀 Installation
 
-## 5. Endpoints de l'API
+### Prérequis
+- PHP 8.1+
+- Composer
+- PostgreSQL 14+
+- Symfony CLI (optionnel)
 
-L'API est divisée en trois sections : publique, administration et webhooks.
+### Étapes
 
-### API Publique (Lecture seule)
+1. **Cloner le repository**
+   ```bash
+   git clone https://github.com/slimsayari/auramur-cms.git
+   cd auramur-cms
+   ```
 
-Ces endpoints sont ouverts et ne retournent que le contenu avec le statut `PUBLISHED`.
+2. **Installer les dépendances**
+   ```bash
+   composer install
+   ```
 
-| Méthode | Endpoint | Description |
-|---|---|---|
-| `GET` | `/api/products` | Liste les produits publiés (filtrable, paginé). |
-| `GET` | `/api/products/{id}` | Récupère un produit publié par son UUID. |
-| `GET` | `/api/articles` | Liste les articles publiés. |
-| `GET` | `/api/articles/{id}` | Récupère un article publié. |
-| `GET` | `/api/categories` | Liste toutes les catégories. |
-| `GET` | `/api/tags` | Liste tous les tags. |
+3. **Configurer la base de données**
+   ```bash
+   cp .env .env.local
+   # Éditer .env.local et configurer DATABASE_URL
+   ```
 
-### API d'Administration (Protégée)
+4. **Créer la base de données et appliquer les migrations**
+   ```bash
+   php bin/console doctrine:database:create
+   php bin/console doctrine:migrations:migrate
+   ```
 
-Ces endpoints nécessitent une authentification `ROLE_ADMIN`.
+5. **Lancer le serveur de développement**
+   ```bash
+   symfony server:start
+   # ou
+   php -S localhost:8000 -t public/
+   ```
 
-| Méthode | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/admin/products` | Crée un nouveau produit. |
-| `PATCH` | `/api/admin/products/{id}` | Met à jour un produit. |
-| `DELETE` | `/api/admin/products/{id}` | Supprime un produit. |
-| `PATCH` | `/api/admin/products/{id}/publish` | Passe le statut d'un produit à `PUBLISHED`. |
-| `POST` | `/api/admin/articles` | Crée un nouvel article. |
-| `PATCH` | `/api/admin/articles/{id}` | Met à jour un article. |
-| `GET` | `/api/admin/ai-generations` | Liste les générations IA. |
-| `PATCH` | `/api/admin/ai-validations/{id}/validate` | Valide une génération IA et applique le contenu. |
-| `PATCH` | `/api/admin/ai-validations/{id}/reject` | Rejette une génération IA. |
+6. **Accéder à l'interface admin**
+   ```
+   http://localhost:8000/admin
+   ```
 
-### Webhooks
+---
 
-| Méthode | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/webhooks/ai-generations` | Endpoint pour recevoir le contenu généré par n8n. Protégé par un token secret. |
+## 📚 Documentation
 
-## 6. Workflow de Validation de Contenu IA
+- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Architecture globale du projet
+- **[README_V2.md](README_V2.md)** - Fonctionnalités métier (variantes, SEO, import/export)
+- **[README_V3.md](README_V3.md)** - Fonctionnalités structurelles (workflow, versioning, webhooks)
+- **[API_GUIDE.md](API_GUIDE.md)** - Guide d'utilisation de l'API avec exemples cURL
+- **[N8N_INTEGRATION.md](N8N_INTEGRATION.md)** - Guide d'intégration n8n
+- **[EXTENSION_DESIGN.md](EXTENSION_DESIGN.md)** - Design des extensions v2
+- **[STRUCTURAL_FEATURES_DESIGN.md](STRUCTURAL_FEATURES_DESIGN.md)** - Design des fonctionnalités structurelles v3
 
-Le processus de validation est central au CMS.
+---
 
-1.  **Génération** : Un service externe (n8n) génère du contenu (ex: une description de produit).
-2.  **Import** : n8n appelle le webhook `POST /api/webhooks/ai-generations` avec le contenu.
-3.  **Stockage** : Le `AiGenerationService` crée une entité `AiGeneration` avec le statut `DRAFT` et l'associe au produit ou à l'article concerné.
-4.  **Validation** : Un administrateur, via une interface, consulte les générations en attente (`GET /api/admin/ai-validations/pending`).
-5.  **Action** :
-    *   **Validation** : L'admin appelle `PATCH /api/admin/ai-validations/{id}/validate`. Le `ValidationService` met à jour le statut de la génération à `VALIDATED` et applique le contenu à l'entité parente (ex: met à jour la description du produit).
-    *   **Rejet** : L'admin appelle `PATCH /api/admin/ai-validations/{id}/reject`. Le statut passe à `ARCHIVED` avec un motif de rejet.
-6.  **Publication** : Une fois le contenu validé et affiné, l'administrateur publie le produit ou l'article (`PATCH /api/admin/products/{id}/publish`).
+## 🔗 Endpoints Clés
 
-## 7. Instructions de Mise en Place
+### API Publique (lecture seule, contenu PUBLISHED)
+- `GET /api/products` - Liste des produits
+- `GET /api/products/{id}` - Détail d'un produit
+- `GET /api/articles` - Liste des articles
+- `GET /api/categories` - Catégories
+- `GET /api/tags` - Tags
 
-1.  **Cloner le projet** :
-    ```bash
-    git clone <votre-repo>
-    cd auramur-cms
-    ```
+### API Admin (protégée, ROLE_ADMIN)
+- `POST /api/admin/products` - Créer un produit
+- `PATCH /api/admin/products/{id}` - Modifier un produit
+- `POST /api/admin/products/{id}/workflow/publish` - Publier un produit
+- `GET /api/admin/products/{id}/versions` - Historique des versions
+- `POST /api/admin/products/{id}/versions/{versionNumber}/rollback` - Rollback
 
-2.  **Installer les dépendances** :
-    ```bash
-    composer install
-    ```
+### Webhooks & Intégrations
+- `POST /api/webhooks/ai-generations` - Webhook n8n pour générations IA
+- `POST /api/admin/import/woocommerce` - Import depuis WooCommerce
+- `POST /api/admin/export/typesense` - Export vers Typesense
 
-3.  **Configurer l'environnement** :
-    Copiez `.env` vers `.env.local` et configurez vos variables, notamment `DATABASE_URL` et `WEBHOOK_SECRET`.
-    ```bash
-    cp .env .env.local
-    # Éditez .env.local
-    ```
-    Pour le développement, la base de données SQLite est préconfigurée.
+### Preview & Redirections
+- `GET /api/preview/{token}` - Prévisualiser un contenu
+- `GET /api/redirects/check?path=/ancienne-url` - Vérifier une redirection
 
-4.  **Créer la base de données et les migrations** :
-    ```bash
-    php bin/console doctrine:database:create --if-not-exists
-    php bin/console doctrine:migrations:migrate
-    ```
+---
 
-5.  **Lancer le serveur** :
-    Utilisez le binaire Symfony CLI pour lancer le serveur de développement.
-    ```bash
-    symfony server:start
-    ```
+## 🛠️ Technologies
 
-L'API sera accessible à l'adresse `https://127.0.0.1:8000/api`.
+- **Symfony 6.4** - Framework PHP
+- **API Platform** - API REST hypermedia
+- **Doctrine ORM** - Mapping objet-relationnel
+- **PostgreSQL** - Base de données
+- **EasyAdmin** - Interface d'administration
+- **UUID v7** - Identifiants uniques
 
-## 8. Choix Techniques et Bonnes Pratiques
+---
 
-- **UUID v7** : Utilisé comme clé primaire pour toutes les entités pour des raisons de performance et de non-séquentialité.
-- **DTOs pour l'API** : Le pattern DTO est utilisé pour découpler les objets de l'API des entités Doctrine. Cela permet une validation fine et une transformation des données entrantes avant de toucher au modèle de données.
-- **Services Métier** : Toute la logique est encapsulée dans des services, rendant les contrôleurs légers et la logique réutilisable et testable.
-- **Enums PHP 8.1** : Les statuts (`ContentStatus`) et types (`AiGenerationType`) sont gérés via des Enums pour un code plus sûr et plus lisible.
-- **Sécurité** : L'accès à l'API d'administration est restreint via `access_control` et `denyAccessUnlessGranted`. Le webhook est protégé par un simple token partagé.
-- **Configuration par environnement** : Le projet utilise les fichiers `.env` de Symfony pour gérer la configuration de manière flexible entre les environnements de `dev`, `test` et `prod`.
+## 📝 Licence
+
+Ce projet est sous licence MIT.
+
+---
+
+## 👨‍💻 Auteur
+
+**Manus AI** - Lead Developer Symfony + API Platform avec 10+ ans d'expérience.
+
+---
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! Merci de créer une Pull Request avec une description claire des modifications.
