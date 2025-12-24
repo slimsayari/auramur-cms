@@ -18,8 +18,19 @@ class SeoService
 
     public function generateSlug(string $title): string
     {
-        $slug = strtolower(trim($title));
-        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+        // Translittération des caractères accentués
+        $slug = transliterator_transliterate(
+            'Any-Latin; Latin-ASCII; Lower()',
+            $title
+        );
+        
+        // Nettoyage : garder uniquement lettres, chiffres et espaces
+        $slug = preg_replace('/[^a-z0-9\s-]/', '', $slug);
+        
+        // Remplacer les espaces et tirets multiples par un seul tiret
+        $slug = preg_replace('/[\s-]+/', '-', $slug);
+        
+        // Supprimer les tirets en début et fin
         $slug = trim($slug, '-');
 
         return $slug;
@@ -130,5 +141,18 @@ class SeoService
 
         $prices = $variants->map(fn ($v) => (float) $v->getPricePerM2())->toArray();
         return max($prices);
+    }
+
+    public function validateSlug(string $slug): bool
+    {
+        if (strlen($slug) > 255) {
+            return false;
+        }
+
+        if (!preg_match("/^[a-z0-9]+(?:-[a-z0-9]+)*$/", $slug)) {
+            return false;
+        }
+
+        return true;
     }
 }

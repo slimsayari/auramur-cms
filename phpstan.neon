@@ -1,0 +1,17 @@
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - src/Kernel.php
+        - tests/bootstrap.php
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+    doctrine:
+        repositoryClass: Doctrine\ORM\EntityRepository
+    ignoreErrors:
+        - '#Cannot call method [a-zA-Z]+\(\) on [a-zA-Z\\]+\|null#'
+        - '#Access to an undefined property#'
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false

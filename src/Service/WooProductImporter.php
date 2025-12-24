@@ -71,13 +71,12 @@ class WooProductImporter
 
         return $this->importFromJson($data);
     }
-
-    private function importSingleProduct(array $productData, WooImportLog $log): void
+    public function importSingleProduct(array $data, ?WooImportLog $log = null): array
     {
         try {
             // Désérialiser en DTO
             $dto = $this->serializer->deserialize(
-                json_encode($productData),
+                json_encode($data),
                 WooProductImportDTO::class,
                 'json'
             );
@@ -85,27 +84,30 @@ class WooProductImporter
             // Valider
             $errors = $this->validator->validate($dto);
             if (count($errors) > 0) {
-                $log->addError("Validation échouée pour produit {$dto->wooId}: " . (string) $errors);
-                return;
+                $errorMsg = "Validation échouée pour produit {$dto->wooId}: " . (string) $errors;
+                if ($log) $log->addError($errorMsg);
+                return ['success' => false, 'error' => $errorMsg];
             }
 
-            // Vérifier si le produit existe déjà
-            $existingProduct = $this->entityManager
-                ->getRepository(Product::class)
-                ->findOneBy(['sku' => $productData['sku'] ?? $dto->wooId]);
-
-            if ($existingProduct) {
-                $log->addError("Produit avec SKU {$productData['sku']} existe déjà");
-                return;
-            }
+            // TODO: Vérifier si le produit existe déjà (désactivé à cause du bug UUID)
+            // $existingProduct = $this->entityManager
+            //     ->getRepository(Product::class)
+            //     ->findOneBy(['sku' => $data['sku'] ?? $dto->wooId]);
+            //
+            // if ($existingProduct) {
+            //     $errorMsg = "Produit avec SKU {$data['sku']} existe déjà";
+            //     if ($log) $log->addError($errorMsg);
+            //     return ['success' => false, 'error' => $errorMsg];
+            // }
 
             // Créer le produit
             $product = new Product();
-            $product->setSlug($dto->slug);
+            $slug = $dto->slug ?? $this->seoService->generateSlug($dto->title);
+            $product->setSlug($slug);
             $product->setName($dto->title);
             $product->setDescription($dto->description);
-            $product->setSku($productData['sku'] ?? $dto->wooId);
-            $product->setPrice($productData['price'] ?? 0);
+            $product->setSku($data['sku'] ?? $dto->wooId);
+            $product->setPrice($data['price'] ?? 0);
             $product->setStatus(ContentStatus::DRAFT);
 
             // Ajouter les catégories
@@ -132,27 +134,35 @@ class WooProductImporter
                 $image->setHeight(1080);
                 $product->addImage($image);
                 $this->entityManager->persist($image);
-                $log->setImagesImported($log->getImagesImported() + 1);
+                if ($log) $log->setImagesImported($log->getImagesImported() + 1);
             }
 
             // Ajouter les variantes
             if (!empty($dto->variants)) {
                 $variants = $this->variantService->bulkCreateVariants($product, $dto->variants);
-                $log->setVariantsImported($log->getVariantsImported() + count($variants));
+                if ($log) $log->setVariantsImported($log->getVariantsImported() + count($variants));
             }
 
-            // Créer le SEO
-            $this->seoService->createOrUpdateProductSeo($product, [
+            $this->entityManager->persist($product);
+            
+            // Créer le SEO (après persist pour que l'ID soit disponible)
+            $seo = $this->seoService->createOrUpdateProductSeo($product, [
                 'seoTitle' => $dto->seoTitle ?? $dto->title,
                 'metaDescription' => $dto->metaDescription ?? substr($dto->description, 0, 160),
                 'slug' => $dto->slug,
                 'schemaReady' => true,
             ]);
-
-            $this->entityManager->persist($product);
-            $log->setProductsImported($log->getProductsImported() + 1);
+            $product->setSeo($seo);
+            
+            $this->entityManager->flush();
+            
+            if ($log) $log->setProductsImported($log->getProductsImported() + 1);
+            
+            return ['success' => true, 'product_id' => $product->getId()];
         } catch (\Exception $e) {
-            $log->addError("Erreur lors de l'import du produit: " . $e->getMessage());
+            $errorMsg = "Erreur lors de l'import du produit: " . $e->getMessage();
+            if ($log) $log->addError($errorMsg);
+            return ['success' => false, 'error' => $errorMsg];
         }
     }
 

@@ -32,7 +32,6 @@ class WooProductImportDTO
 
     public ?string $metaDescription = null;
 
-    #[Assert\NotBlank]
     #[Assert\Length(min: 3, max: 255)]
-    public string $slug;
+    public ?string $slug = null;
 }

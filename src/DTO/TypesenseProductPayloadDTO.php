@@ -4,6 +4,12 @@ namespace App\DTO;
 
 class TypesenseProductPayloadDTO
 {
+    public function __construct()
+    {
+        $this->seoTitle = '';
+        $this->metaDescription = '';
+    }
+
     public string $id;
     public string $name;
     public string $description;

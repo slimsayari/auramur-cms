@@ -6,6 +6,7 @@ use App\Repository\ProductSeoRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductSeoRepository::class)]
 #[ORM\Table(name: 'product_seo')]
@@ -21,12 +22,19 @@ class ProductSeo
     private Product $product;
 
     #[ORM\Column(type: 'string', length: 60)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 60, maxMessage: 'Le titre SEO ne peut pas dépasser {{ limit }} caractères.')]
     private string $seoTitle;
 
     #[ORM\Column(type: 'string', length: 160)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 160, maxMessage: 'La meta description ne peut pas dépasser {{ limit }} caractères.')]
     private string $metaDescription;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    #[Assert\Regex(pattern: '/^[a-z0-9]+(?:-[a-z0-9]+)*$/', message: 'Le slug doit contenir uniquement des lettres minuscules, des chiffres et des tirets.')]
     private string $slug;
 
     #[ORM\Column(type: 'string', length: 500, nullable: true)]

@@ -1,0 +1,71 @@
+{
+  "products": [
+    {
+      "wooId": "2001",
+      "title": "",
+      "description": "Produit sans titre - doit échouer",
+      "slug": "",
+      "sku": "",
+      "categories": [],
+      "tags": [],
+      "images": [],
+      "variants": []
+    },
+    {
+      "wooId": "2002",
+      "title": "Produit Sans SKU",
+      "description": "Ce produit n'a pas de SKU",
+      "slug": "produit-sans-sku",
+      "categories": [],
+      "tags": [],
+      "images": [],
+      "variants": []
+    },
+    {
+      "wooId": "2003",
+      "title": "Produit Avec Prix Invalide",
+      "description": "Ce produit a un prix invalide",
+      "slug": "produit-prix-invalide",
+      "sku": "INVALID-PRICE",
+      "price": "not-a-number",
+      "categories": [],
+      "tags": [],
+      "images": [],
+      "variants": []
+    },
+    {
+      "wooId": "2004",
+      "title": "Produit Avec Variante Invalide",
+      "description": "Ce produit a une variante sans SKU",
+      "slug": "produit-variante-invalide",
+      "sku": "VALID-SKU",
+      "price": 99.99,
+      "categories": [],
+      "tags": [],
+      "images": [],
+      "variants": [
+        {
+          "name": "Variante Sans SKU",
+          "pricePerM2": 5.99,
+          "stock": 10
+        }
+      ]
+    },
+    {
+      "wooId": "2005",
+      "title": "Produit Avec Image Invalide",
+      "description": "Ce produit a une image sans URL",
+      "slug": "produit-image-invalide",
+      "sku": "IMG-INVALID",
+      "price": 79.99,
+      "categories": [],
+      "tags": [],
+      "images": [
+        {
+          "alt": "Image sans URL"
+        }
+      ],
+      "variants": []
+    }
+  ]
+}

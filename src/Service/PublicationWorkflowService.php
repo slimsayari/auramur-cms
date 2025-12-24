@@ -69,6 +69,7 @@ class PublicationWorkflowService
         }
 
         $entity->setStatus(ContentStatus::DRAFT);
+        $entity->setPublishedAt(null);
         $entity->setUpdatedAt(new \DateTimeImmutable());
         $this->entityManager->flush();
     }
@@ -150,23 +151,17 @@ class PublicationWorkflowService
         $activeVariants = $product->getVariants()->filter(fn($variant) => $variant->isActive());
 
         if ($activeVariants->isEmpty()) {
-            throw new \InvalidArgumentException(
-                "Impossible de publier un produit sans variante active. Veuillez ajouter au moins une variante avec stock > 0."
-            );
+            throw new \Exception('Au moins une variante active est requise');
         }
 
         // Vérifier qu'il y a au moins une image
         if ($product->getImages()->isEmpty()) {
-            throw new \InvalidArgumentException(
-                "Impossible de publier un produit sans image. Veuillez ajouter au moins une image."
-            );
+            throw new \Exception('Au moins une image est requise');
         }
 
         // Vérifier que le SEO est configuré
         if (!$product->getSeo()) {
-            throw new \InvalidArgumentException(
-                "Impossible de publier un produit sans configuration SEO. Veuillez configurer les métadonnées SEO."
-            );
+            throw new \Exception('La configuration SEO est requise');
         }
     }
 }

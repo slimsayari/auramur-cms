@@ -1,0 +1,116 @@
+{
+  "products": [
+    {
+      "wooId": "1001",
+      "title": "Papier Peint Tropical Paradise",
+      "description": "Un magnifique papier peint tropical avec des feuilles de palmier et des fleurs exotiques. Parfait pour créer une ambiance tropicale dans votre intérieur.",
+      "slug": "papier-peint-tropical-paradise",
+      "price": 89.99,
+      "sku": "PP-TROP-001",
+      "categories": ["Tropical", "Moderne"],
+      "tags": ["Populaire", "Nouveau"],
+      "seoTitle": "Papier Peint Tropical Paradise - Décoration Exotique",
+      "metaDescription": "Découvrez notre papier peint tropical Paradise. Feuilles de palmier, fleurs exotiques. Livraison rapide.",
+      "images": [
+        {
+          "url": "https://via.placeholder.com/1920x1080?text=Tropical+Paradise+1",
+          "alt": "Papier peint tropical paradise vue 1"
+        },
+        {
+          "url": "https://via.placeholder.com/1920x1080?text=Tropical+Paradise+2",
+          "alt": "Papier peint tropical paradise vue 2"
+        }
+      ],
+      "variants": [
+        {
+          "sku": "PP-TROP-001-S",
+          "name": "Small (50x300cm)",
+          "dimensions": "50x300",
+          "pricePerM2": 5.99,
+          "stock": 25,
+          "isActive": true
+        },
+        {
+          "sku": "PP-TROP-001-M",
+          "name": "Medium (100x300cm)",
+          "dimensions": "100x300",
+          "pricePerM2": 5.49,
+          "stock": 15,
+          "isActive": true
+        },
+        {
+          "sku": "PP-TROP-001-L",
+          "name": "Large (150x300cm)",
+          "dimensions": "150x300",
+          "pricePerM2": 4.99,
+          "stock": 10,
+          "isActive": true
+        }
+      ]
+    },
+    {
+      "wooId": "1002",
+      "title": "Papier Peint Géométrique Moderne",
+      "description": "Design géométrique moderne avec des formes abstraites et des couleurs contemporaines. Idéal pour un intérieur minimaliste.",
+      "slug": "papier-peint-geometrique-moderne",
+      "price": 79.99,
+      "sku": "PP-GEO-001",
+      "categories": ["Moderne", "Minimaliste"],
+      "tags": ["Nouveau", "Tendance"],
+      "seoTitle": "Papier Peint Géométrique Moderne - Design Contemporain",
+      "metaDescription": "Papier peint géométrique moderne. Formes abstraites, couleurs contemporaines. Parfait pour intérieur minimaliste.",
+      "images": [
+        {
+          "url": "https://via.placeholder.com/1920x1080?text=Geometrique+1",
+          "alt": "Papier peint géométrique moderne"
+        }
+      ],
+      "variants": [
+        {
+          "sku": "PP-GEO-001-M",
+          "name": "Medium (100x300cm)",
+          "dimensions": "100x300",
+          "pricePerM2": 5.29,
+          "stock": 20,
+          "isActive": true
+        },
+        {
+          "sku": "PP-GEO-001-L",
+          "name": "Large (150x300cm)",
+          "dimensions": "150x300",
+          "pricePerM2": 4.79,
+          "stock": 12,
+          "isActive": true
+        }
+      ]
+    },
+    {
+      "wooId": "1003",
+      "title": "Papier Peint Vintage Floral",
+      "description": "Motif floral vintage inspiré des années 70. Couleurs douces et romantiques pour une décoration rétro chic.",
+      "slug": "papier-peint-vintage-floral",
+      "price": 69.99,
+      "sku": "PP-VIN-001",
+      "categories": ["Vintage", "Floral"],
+      "tags": ["Romantique", "Rétro"],
+      "seoTitle": "Papier Peint Vintage Floral - Décoration Rétro Chic",
+      "metaDescription": "Papier peint vintage floral années 70. Couleurs douces, motifs romantiques. Décoration rétro chic.",
+      "images": [
+        {
+          "url": "https://via.placeholder.com/1920x1080?text=Vintage+Floral",
+          "alt": "Papier peint vintage floral"
+        }
+      ],
+      "variants": [
+        {
+          "sku": "PP-VIN-001-M",
+          "name": "Medium (100x300cm)",
+          "dimensions": "100x300",
+          "pricePerM2": 4.99,
+          "stock": 18,
+          "isActive": true
+        }
+      ]
+    }
+  ]
+}

@@ -47,8 +47,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Générations IA', 'fa fa-brain', AiGeneration::class);
         yield MenuItem::linkToCrud('Logs d\'import', 'fa fa-history', WooImportLog::class);
 
-        yield MenuItem::section('Outils');
-        yield MenuItem::linkToRoute('Import WooCommerce', 'fa fa-upload', 'admin_import_woo');
-        yield MenuItem::linkToRoute('Export Typesense', 'fa fa-download', 'admin_export_typesense');
+        // yield MenuItem::section('Outils');
+        // yield MenuItem::linkToRoute('Import WooCommerce', 'fa fa-upload', 'admin_import_woo');
+        // yield MenuItem::linkToRoute('Export Typesense', 'fa fa-download', 'admin_export_typesense');
     }
 }

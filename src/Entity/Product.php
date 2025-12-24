@@ -9,11 +9,25 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[ORM\Table(name: 'products')]
 #[ORM\Index(columns: ['status', 'created_at'], name: 'idx_status_created')]
 #[ORM\Index(columns: ['slug'], name: 'idx_slug')]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+    ],
+    paginationEnabled: true,
+    paginationItemsPerPage: 20
+)]
+#[ApiFilter(SearchFilter::class, properties: ['status' => 'exact', 'slug' => 'exact'])]
 class Product
 {
     #[ORM\Id]
