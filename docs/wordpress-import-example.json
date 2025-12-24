@@ -1,0 +1,56 @@
+[
+  {
+    "title": "Comment choisir le bon papier peint pour votre salon",
+    "content": "<p>Le choix du papier peint est crucial pour créer l'ambiance parfaite dans votre salon. Voici nos conseils d'experts pour faire le bon choix.</p><h2>1. Considérez la luminosité de la pièce</h2><p>Une pièce sombre bénéficiera de couleurs claires et de motifs lumineux, tandis qu'une pièce très lumineuse peut supporter des teintes plus audacieuses.</p><h2>2. Harmonisez avec votre mobilier</h2><p>Votre papier peint doit compléter votre mobilier existant, pas le concurrencer.</p>",
+    "excerpt": "Découvrez nos conseils d'experts pour choisir le papier peint parfait pour votre salon et créer une ambiance unique.",
+    "slug": "choisir-papier-peint-salon",
+    "published_at": "2024-01-15 10:00:00",
+    "author": "Marie Dubois",
+    "featured_image": "https://example.com/wp-content/uploads/2024/01/salon-papier-peint.jpg",
+    "categories": ["Conseils", "Décoration"],
+    "tags": ["papier peint", "salon", "décoration intérieure"],
+    "seo": {
+      "title": "Comment choisir le bon papier peint pour votre salon | Auramur",
+      "description": "Découvrez nos conseils d'experts pour choisir le papier peint parfait pour votre salon. Luminosité, harmonisation, tendances 2024.",
+      "canonical": null,
+      "noindex": false,
+      "nofollow": false
+    }
+  },
+  {
+    "title": "Les tendances papier peint 2024",
+    "content": "<p>L'année 2024 apporte son lot de nouvelles tendances en matière de papier peint. Découvrez les motifs et couleurs qui feront sensation cette année.</p><h2>Motifs naturels et organiques</h2><p>Les motifs inspirés de la nature continuent de dominer, avec des feuillages tropicaux et des textures minérales.</p><h2>Couleurs terreuses</h2><p>Les tons chauds comme le terracotta, l'ocre et le vert olive sont très prisés.</p><h2>Géométrie audacieuse</h2><p>Les formes géométriques graphiques font leur grand retour avec des designs modernes et épurés.</p>",
+    "excerpt": "Découvrez les tendances papier peint 2024 : motifs naturels, couleurs terreuses et géométrie audacieuse.",
+    "slug": "tendances-papier-peint-2024",
+    "published_at": "2024-01-20 14:30:00",
+    "author": "Pierre Martin",
+    "featured_image": "https://example.com/wp-content/uploads/2024/01/tendances-2024.jpg",
+    "categories": ["Tendances", "Inspiration"],
+    "tags": ["tendances", "2024", "design"],
+    "seo": {
+      "title": "Tendances Papier Peint 2024 : Motifs et Couleurs | Auramur",
+      "description": "Découvrez les tendances papier peint 2024 : motifs naturels, couleurs terreuses, géométrie audacieuse. Inspirez-vous pour votre décoration.",
+      "canonical": null,
+      "noindex": false,
+      "nofollow": false
+    }
+  },
+  {
+    "title": "Guide d'installation du papier peint",
+    "content": "<p>Installer du papier peint soi-même peut sembler intimidant, mais avec les bons outils et techniques, c'est tout à fait réalisable.</p><h2>Matériel nécessaire</h2><ul><li>Colle à papier peint adaptée</li><li>Brosse à encoller</li><li>Cutter et règle métallique</li><li>Éponge et chiffon propre</li><li>Niveau à bulle</li></ul><h2>Étapes d'installation</h2><ol><li>Préparez le mur (nettoyage, rebouchage)</li><li>Mesurez et coupez les lés</li><li>Appliquez la colle</li><li>Posez le premier lé</li><li>Maroufllez pour éliminer les bulles</li><li>Raccordez les motifs</li></ol>",
+    "excerpt": "Apprenez à installer votre papier peint vous-même avec notre guide complet étape par étape.",
+    "slug": "guide-installation-papier-peint",
+    "published_at": "2024-02-01 09:00:00",
+    "author": "Sophie Leroy",
+    "featured_image": "https://example.com/wp-content/uploads/2024/02/installation-papier-peint.jpg",
+    "categories": ["Tutoriels", "DIY"],
+    "tags": ["installation", "DIY", "tutoriel"],
+    "seo": {
+      "title": "Guide Complet : Comment Installer du Papier Peint | Auramur",
+      "description": "Apprenez à poser du papier peint vous-même avec notre guide détaillé. Matériel, préparation, pose et finitions.",
+      "canonical": null,
+      "noindex": false,
+      "nofollow": false
+    }
+  }
+]
