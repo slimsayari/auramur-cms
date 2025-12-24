@@ -10,6 +10,8 @@ use App\Entity\ProductVariant;
 use App\Entity\Tag;
 use App\Entity\WooImportLog;
 use App\Entity\AiProviderConfig;
+use App\Entity\Customer;
+use App\Entity\Order;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -48,6 +50,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Configurations IA', 'fa fa-robot', AiProviderConfig::class);
         yield MenuItem::linkToCrud('Générations IA', 'fa fa-brain', AiGeneration::class);
         yield MenuItem::linkToCrud('Logs d\'import WooCommerce', 'fa fa-wordpress', WooImportLog::class);
+
+        yield MenuItem::section('E-commerce');
+        yield MenuItem::linkToCrud('Clients', 'fa fa-users', Customer::class);
+        yield MenuItem::linkToCrud('Commandes', 'fa fa-shopping-cart', Order::class);
 
         // yield MenuItem::section('Outils');
         // yield MenuItem::linkToRoute('Import WooCommerce', 'fa fa-upload', 'admin_import_woo');

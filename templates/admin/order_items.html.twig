@@ -1,0 +1,22 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Variante</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in field.value %}
+            <tr>
+                <td>{{ item.productName }}</td>
+                <td>{{ item.variantName ?? '-' }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unitPrice|number_format(2, ',', ' ') }} €</td>
+                <td>{{ (item.unitPrice * item.quantity)|number_format(2, ',', ' ') }} €</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

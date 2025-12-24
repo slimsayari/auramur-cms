@@ -8,10 +8,24 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        customer_provider:
+            entity:
+                class: App\Entity\Customer
+                property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        api_customers:
+            pattern: ^/api/customers
+            stateless: true
+            provider: customer_provider
+            jwt: ~
+        api_orders:
+            pattern: ^/api/orders
+            stateless: true
+            provider: customer_provider
+            jwt: ~
         main:
             lazy: true
             provider: app_user_provider
@@ -31,6 +45,10 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/api/admin, roles: ROLE_ADMIN }
+        - { path: ^/api/customers/register, roles: PUBLIC_ACCESS }
+        - { path: ^/api/customers/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/customers, roles: ROLE_CUSTOMER }
+        - { path: ^/api/orders, roles: ROLE_CUSTOMER }
         - { path: ^/api/webhooks, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: PUBLIC_ACCESS }
 
